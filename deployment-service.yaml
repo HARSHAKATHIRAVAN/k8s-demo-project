@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: boardgame-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: boardgame
+  template:
+    metadata:
+      labels:
+        app: boardgame
+    spec:
+      containers:
+      - name: boardgame-container
+        image: swaroophandson/boardgame:2
+        ports:
+        - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: boardgame-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: boardgame
+  ports:
+  - port: 8080          # service port
+    targetPort: 8080    # container port
